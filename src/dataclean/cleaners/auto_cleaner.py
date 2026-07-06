@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from .StringCleaner import StringCleaner
+
+from dataclean.cleaners.string_cleaner import StringCleaner
 
 
 @dataclass(frozen=True)

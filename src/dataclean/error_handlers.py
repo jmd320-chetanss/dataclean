@@ -14,9 +14,9 @@ class ErrorContext:
     def __post_init__(self):
         assert isinstance(self.col, str), "Column name must be a string."
         assert len(self.col) > 0, "Column must not be empty."
-        assert isinstance(
-            self.value, (str, type(None))
-        ), "Value must be a string or None."
+        assert isinstance(self.value, (str, type(None))), (
+            "Value must be a string or None."
+        )
         assert isinstance(self.error, Exception), "Error must be an Exception instance."
 
 

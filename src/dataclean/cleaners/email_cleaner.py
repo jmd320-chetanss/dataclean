@@ -1,12 +1,12 @@
-import re
 import itertools
+import re
 from dataclasses import dataclass, field
-from .ColCleaner import ColCleaner
+
+from dataclean.cleaners.col_cleaner import ColCleaner
 
 
 @dataclass(frozen=True)
 class EmailCleaner(ColCleaner):
-
     max_parse_count: int = 1
     value_separator: str = ", "
 

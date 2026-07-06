@@ -1,7 +1,8 @@
+import math
 from dataclasses import dataclass, field
 from typing import Literal
-from .. import math_utils
-from .ColCleaner import ColCleaner
+
+from dataclean.cleaners.col_cleaner import ColCleaner
 
 
 @dataclass(frozen=True)
@@ -32,7 +33,13 @@ class FloatCleaner(ColCleaner):
         object.__setattr__(self, "datatype", f"decimal(38, {precision})")
 
     def clean_value(self, value: str | None):
+        if isinstance(value, str):
+            value = value.replace(",", "")
 
         parsed_value = float(value)
-        parsed_value = math_utils.floor_float(parsed_value, self.precision)
+        parsed_value = FloatCleaner._floor_float(parsed_value, self.precision)
         return parsed_value
+
+    def _floor_float(value: float, decimal_places: int = 2) -> float:
+        factor = 10**decimal_places
+        return math.floor(value * factor) / factor

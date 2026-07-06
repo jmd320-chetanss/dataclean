@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Literal, ClassVar
-from .ColCleaner import ColCleaner
-from dataclean.src import utils
+from typing import ClassVar, Literal
+
+from dataclean import _utils
+from dataclean.cleaners.col_cleaner import ColCleaner
 
 
 @dataclass(frozen=True)
@@ -36,29 +37,29 @@ class DatetimeCleaner(ColCleaner):
 
     def __post_init__(self):
 
-        assert isinstance(
-            self.format, str
-        ), f"format must be a string, got {type(self.format)}"
+        assert isinstance(self.format, str), (
+            f"format must be a string, got {type(self.format)}"
+        )
 
         assert len(self.format) > 0, "format must not be empty"
 
-        assert isinstance(
-            self.parse_formats, (str, list)
-        ), f"parse_formats must be a string or a list of strings, got {type(self.parse_formats)}"
+        assert isinstance(self.parse_formats, (str, list)), (
+            f"parse_formats must be a string or a list of strings, got {type(self.parse_formats)}"
+        )
 
         assert len(self.parse_formats) > 0, "parse_formats must not be empty"
 
-        assert all(
-            isinstance(fmt, str) for fmt in self.parse_formats
-        ), f"All parse_formats must be strings, got {self.parse_formats}"
+        assert all(isinstance(fmt, str) for fmt in self.parse_formats), (
+            f"All parse_formats must be strings, got {self.parse_formats}"
+        )
 
-        assert all(
-            len(fmt) > 0 for fmt in self.parse_formats
-        ), f"All parse_formats must not be empty, got {self.parse_formats}"
+        assert all(len(fmt) > 0 for fmt in self.parse_formats), (
+            f"All parse_formats must not be empty, got {self.parse_formats}"
+        )
 
         # Clean parse formats
         parse_formats = [self._get_format(fmt) for fmt in self.parse_formats]
-        parse_formats = utils.remove_duplicates(parse_formats)
+        parse_formats = _utils.remove_duplicates(parse_formats)
 
         format = self._get_format(self.format)
 

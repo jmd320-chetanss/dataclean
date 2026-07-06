@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
-from .. import math_utils
-from .ColCleaner import ColCleaner
+
+from dataclean.cleaners.col_cleaner import ColCleaner
 
 
 @dataclass(frozen=True)
@@ -18,19 +18,22 @@ class IntCleaner(ColCleaner):
 
     def __post_init__(self):
 
-        assert self.min_value is None or isinstance(
-            self.min_value, int
-        ), f"min_value must be an int or None, got {type(self.min_value)}"
+        assert self.min_value is None or isinstance(self.min_value, int), (
+            f"min_value must be an int or None, got {type(self.min_value)}"
+        )
 
-        assert self.max_value is None or isinstance(
-            self.max_value, int
-        ), f"max_value must be an int or None, got {type(self.max_value)}"
+        assert self.max_value is None or isinstance(self.max_value, int), (
+            f"max_value must be an int or None, got {type(self.max_value)}"
+        )
 
         object.__setattr__(self, "datatype", "bigint")
 
     def clean_value(self, value: str) -> str | None:
 
-        parsed_value = math_utils.parse_int(value)
+        try:
+            parsed_value = int(value)
+        except ValueError:
+            parsed_value = None
 
         if parsed_value is None:
             raise ValueError(f"Cannot parse '{value}' as integer.")

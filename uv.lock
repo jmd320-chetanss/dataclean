@@ -1,0 +1,44 @@
+version = 1
+revision = 3
+requires-python = ">=3.12"
+
+[[package]]
+name = "dataclean"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "phonenumbers" },
+    { name = "pycountry" },
+    { name = "wordninja" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "phonenumbers", specifier = "==9.0.14" },
+    { name = "pycountry", specifier = "==24.6.1" },
+    { name = "wordninja", specifier = "==2.0.0" },
+]
+
+[[package]]
+name = "phonenumbers"
+version = "9.0.14"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e6/ef/1e213640c1943094f001daaa48c2d9ff12c137466fd4be36802f6ea7ece3/phonenumbers-9.0.14.tar.gz", hash = "sha256:98afb3e86bf9ae02cc7c98ca44fa8827babb72842f90da9884c5d998937572ae", size = 2298072, upload-time = "2025-09-16T06:04:54.845Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/36/bd4ef88378beb8303fd3d7be28a4847d14fb977210544a3567821a1d79e9/phonenumbers-9.0.14-py2.py3-none-any.whl", hash = "sha256:6bdf5c46dbfefa1d941d122432d1958418d1dfe3f8c8c81d4c8e80f5442ea41f", size = 2583932, upload-time = "2025-09-16T06:04:47.046Z" },
+]
+
+[[package]]
+name = "pycountry"
+version = "24.6.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/76/57/c389fa68c50590881a75b7883eeb3dc15e9e73a0fdc001cdd45c13290c92/pycountry-24.6.1.tar.gz", hash = "sha256:b61b3faccea67f87d10c1f2b0fc0be714409e8fcdcc1315613174f6466c10221", size = 6043910, upload-time = "2024-06-01T04:12:15.05Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b1/ec/1fb891d8a2660716aadb2143235481d15ed1cbfe3ad669194690b0604492/pycountry-24.6.1-py3-none-any.whl", hash = "sha256:f1a4fb391cd7214f8eefd39556d740adcc233c778a27f8942c8dca351d6ce06f", size = 6335189, upload-time = "2024-06-01T04:11:49.711Z" },
+]
+
+[[package]]
+name = "wordninja"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/30/15/abe4af50f4be92b60c25e43c1c64d08453b51e46c32981d80b3aebec0260/wordninja-2.0.0.tar.gz", hash = "sha256:1a1cc7ec146ad19d6f71941ee82aef3d31221700f0d8bf844136cf8df79d281a", size = 541572, upload-time = "2019-08-10T02:16:54.944Z" }

@@ -1,14 +1,16 @@
+import logging
+from dataclasses import dataclass
+
+import pyspark.sql.functions as spf
+import wordninja
 from pyspark.sql import DataFrame
 from pyspark.sql.connect.dataframe import DataFrame as ConnectDataFrame
-import pyspark.sql.functions as spf
-from dataclasses import dataclass
-import wordninja
-import logging
 
-from . import string_utils
-from .cleaners.ColCleaner import ColCleaner
-from .cleaners.DropCleaner import DropCleaner
-from .cleaners.AutoCleaner import AutoCleaner
+from dataclean import _utils
+from dataclean.cleaners.auto_cleaner import AutoCleaner
+from dataclean.cleaners.col_cleaner import ColCleaner
+from dataclean.cleaners.drop_cleaner import DropCleaner
+
 
 _empty_logger = logging.getLogger("empty_logger")
 _empty_logger.addHandler(logging.NullHandler())
@@ -48,11 +50,9 @@ def clean_table(
     columns += [col for col in df.columns if col not in columns]
 
     for col in columns:
-
         cleaner: ColCleaner = cleaners.get(col, default_cleaner)
 
         if col not in df.columns:
-
             if cleaner.if_exists is True:
                 logger.info(f"Column '{col}' not found in DataFrame, skipping...")
                 continue
@@ -92,15 +92,14 @@ def clean_table(
     rename_mapping: dict[str, str] = {}
 
     for col in df.columns:
-
         # Calculate new name for the column
         cleaner = cleaners.get(col, default_cleaner)
         if cleaner is not None and cleaner.rename_to is not None:
             new_name = cleaner.rename_to
         else:
-            words = wordninja.split(col)
+            words = wordninja.split(col.lower())
             new_name = "_".join(words)
-            new_name = string_utils.to_snake_case(new_name)
+            new_name = _utils.to_snake_case(new_name)
 
         # Register new name for renaming only if it is different than what it already is,
         # no need to clutter up the rename mapping and logs
@@ -110,7 +109,7 @@ def clean_table(
 
     df = df.withColumnsRenamed(rename_mapping)
 
-    logger.info(f"Renaming columns done.")
+    logger.info("Renaming columns done.")
 
     return Result(
         value=df,

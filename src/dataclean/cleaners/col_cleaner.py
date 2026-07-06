@@ -1,13 +1,15 @@
-from dataclasses import dataclass, field, KW_ONLY
 from abc import ABC, abstractmethod
-from pyspark.sql import Column
+from dataclasses import KW_ONLY, dataclass, field
+
 import pyspark.sql.functions as spf
-from dataclean.src.preprocessors import default_preprocessor
-from dataclean.src.error_handlers import (
-    ErrorHandler,
+from pyspark.sql import Column
+
+from dataclean.error_handlers import (
     ErrorContext,
+    ErrorHandler,
     error_handler_default,
 )
+from dataclean.preprocessors import default_preprocessor
 
 
 @dataclass(frozen=True)
@@ -40,22 +42,22 @@ class ColCleaner(ABC):
         assert isinstance(self.postprocessors, list), "Postprocessors must be a list."
 
         assert all(
-            callable(preprocessor) for preprocessor in self.preprocessors
+            preprocessor is None or callable(preprocessor)
+            for preprocessor in self.preprocessors
         ), "All preprocessors must be callable."
 
         assert all(
-            callable(postprocessor) for postprocessor in self.postprocessors
+            postprocessor is None or callable(postprocessor)
+            for postprocessor in self.postprocessors
         ), "All postprocessors must be callable."
 
-        assert isinstance(
-            self.rename_to, (str, type(None))
-        ), "Rename_to must be a string or None."
+        assert isinstance(self.rename_to, (str, type(None))), (
+            "rename_to must be a string or None."
+        )
 
         assert isinstance(self.datatype, str), "Datatype must be a string."
 
-        assert isinstance(
-            self.error_handler, ErrorHandler
-        ), "Error handler must be an instance of ErrorHandler."
+        assert callable(self.error_handler), "Error handler must be callable."
 
         assert isinstance(self.if_exists, bool), "If_exists must be a boolean."
 
@@ -81,9 +83,15 @@ class ColCleaner(ABC):
 
             preprocessed_value = value
 
-            if len(self.preprocessors) > 0:
+            preprocessors = [
+                preprocessor
+                for preprocessor in self.preprocessors
+                if preprocessor is not None
+            ]
+
+            if len(preprocessors) > 0:
                 try:
-                    for preprocessor in self.preprocessors:
+                    for preprocessor in preprocessors:
                         preprocessed_value = preprocessor(preprocessed_value)
 
                 except Exception as ex:
@@ -122,9 +130,15 @@ class ColCleaner(ABC):
 
             postprocessed_value = cleaned_value
 
-            if len(self.postprocessors) > 0:
+            postprocessors = [
+                postprocessor
+                for postprocessor in self.postprocessors
+                if postprocessor is not None
+            ]
+
+            if len(postprocessors) > 0:
                 try:
-                    for postprocessor in self.postprocessors:
+                    for postprocessor in postprocessors:
                         postprocessed_value = postprocessor(postprocessed_value)
 
                 except Exception as ex:

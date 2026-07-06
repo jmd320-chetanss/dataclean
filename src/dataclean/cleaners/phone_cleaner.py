@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
-from .ColCleaner import ColCleaner
 from typing import Literal
+
 import phonenumbers
+
+from dataclean.cleaners.col_cleaner import ColCleaner
 
 
 @dataclass(frozen=True)
@@ -57,7 +59,9 @@ class PhoneCleaner(ColCleaner):
             "INTERNATIONAL",
             "NATIONAL",
             "RFC3966",
-        ], f"Invalid format: {self.fmt}. Must be one of 'E164', 'INTERNATIONAL', 'NATIONAL', or 'RFC3966'."
+        ], (
+            f"Invalid format: {self.fmt}. Must be one of 'E164', 'INTERNATIONAL', 'NATIONAL', or 'RFC3966'."
+        )
 
         assert isinstance(self.regions, list) and all(
             isinstance(region, str) for region in self.regions

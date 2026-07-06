@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from .NoneCleaner import NoneCleaner
+
+from dataclean.cleaners.none_cleaner import NoneCleaner
 
 
 @dataclass(frozen=True)

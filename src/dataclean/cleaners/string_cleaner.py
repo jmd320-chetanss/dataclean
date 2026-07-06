@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Literal
-from .. import string_utils
-from .ColCleaner import ColCleaner
+from typing import Callable, Literal
+
+from dataclean import _utils
+from dataclean.cleaners.col_cleaner import ColCleaner
 
 
 @dataclass(frozen=True)
@@ -18,15 +19,15 @@ class StringCleaner(ColCleaner):
     # Should the string be converted to lowercase
     case: Literal["lower", "upper", "snake", "camel", "pascal"] | None = None
 
-    _case_updater: callable = field(init=False, repr=False)
+    _case_updater: Callable = field(init=False, repr=False)
 
     def __post_init__(self):
 
         assert self.min_length >= 0, "Minimum length must be non-negative."
 
-        assert (
-            self.max_length >= self.min_length
-        ), "Maximum length must be greater than or equal to minimum length."
+        assert self.max_length >= self.min_length, (
+            "Maximum length must be greater than or equal to minimum length."
+        )
 
         assert self.case in (
             None,
@@ -54,7 +55,7 @@ class StringCleaner(ColCleaner):
         value = self._case_updater(value)
         return value
 
-    def _get_case_updater(self, case: str) -> callable:
+    def _get_case_updater(self, case: str) -> Callable:
         match case:
             case None:
                 return lambda value: value
@@ -63,10 +64,10 @@ class StringCleaner(ColCleaner):
             case "upper":
                 return lambda value: value.upper()
             case "snake":
-                return lambda value: string_utils.to_snake_case(value)
+                return lambda value: _utils.to_snake_case(value)
             case "camel":
-                return lambda value: string_utils.to_camel_case(value)
+                return lambda value: _utils.to_camel_case(value)
             case "pascal":
-                return lambda value: string_utils.to_pascal_case(value)
+                return lambda value: _utils.to_pascal_case(value)
             case _:
                 return None

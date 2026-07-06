@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Callable
 
 
 class Encryptor(ABC):
@@ -33,7 +34,7 @@ def default_preprocessor(value: str | None) -> str | None:
     return value
 
 
-def decrypt_preprocessor(encryptor: Encryptor) -> callable:
+def decrypt_preprocessor(encryptor: Encryptor) -> Callable:
 
     def preprocessor(value: str | None) -> str | None:
 
@@ -50,7 +51,7 @@ def decrypt_preprocessor(encryptor: Encryptor) -> callable:
     return preprocessor
 
 
-def encrypt_postprocessor(encryptor: Encryptor) -> callable:
+def encrypt_postprocessor(encryptor: Encryptor) -> Callable:
 
     def postprocessor(value: str | None) -> str | None:
 
