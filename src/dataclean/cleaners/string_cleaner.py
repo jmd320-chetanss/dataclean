@@ -1,5 +1,6 @@
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, Literal
+from typing import Literal
 
 from dataclean import _utils
 from dataclean.cleaners.col_cleaner import ColCleaner

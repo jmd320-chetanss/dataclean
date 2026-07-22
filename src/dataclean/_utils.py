@@ -74,7 +74,7 @@ def to_pascal_case(text: str) -> str:
         str: The converted string in PascalCase.
     """
     words = re.split(r"[\W_]+", text)
-    return str().join(word.capitalize() for word in words if word)
+    return "".join(word.capitalize() for word in words if word)
 
 
 def to_camel_case(text: str) -> str:

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from dataclean.cleaners.col_cleaner import ColCleaner
 
@@ -11,10 +10,10 @@ class IntCleaner(ColCleaner):
     """
 
     # Minimum value of the signed integer
-    min_value: Optional[int] = None
+    min_value: int | None = None
 
     # Maximum value of the signed integer
-    max_value: Optional[int] = 9223372036854775807
+    max_value: int | None = 9223372036854775807
 
     def __post_init__(self):
 

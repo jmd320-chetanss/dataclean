@@ -11,7 +11,6 @@ from dataclean.cleaners.auto_cleaner import AutoCleaner
 from dataclean.cleaners.col_cleaner import ColCleaner
 from dataclean.cleaners.drop_cleaner import DropCleaner
 
-
 _empty_logger = logging.getLogger("empty_logger")
 _empty_logger.addHandler(logging.NullHandler())
 

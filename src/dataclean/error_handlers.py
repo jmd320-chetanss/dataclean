@@ -1,5 +1,5 @@
-from dataclasses import dataclass, KW_ONLY
-from typing import Callable
+from collections.abc import Callable
+from dataclasses import KW_ONLY, dataclass
 
 
 @dataclass(frozen=True)
